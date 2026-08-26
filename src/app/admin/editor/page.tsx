@@ -13,6 +13,7 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const starter =
   "A good tool does not ask to be admired. It makes room for attention.\n\nStart writing your note here...";
@@ -102,37 +103,46 @@ export default function EditorPage() {
     void save("draft");
   }
   function inputClass(name: FieldName) {
-    return errors[name] ? "editor-input-error" : "";
+    return errors[name] ? "border-destructive shadow-[0_0_0_3px_rgba(217,45,32,0.1)]" : "";
   }
   if (loading)
     return (
-      <main className="admin-frame">
-        <p className="editor-loading">Loading writing desk...</p>
+      <main className="mx-auto flex min-h-screen max-w-[1240px] items-center justify-center px-[5vw] text-muted">
+        <p>Loading writing desk...</p>
       </main>
     );
   return (
-    <main className="admin-frame">
-      <header className="admin-header">
-        <Link href="/admin" className="wordmark">
-          FIELD<span> / </span>NOTES
+    <main className="mx-auto min-h-screen max-w-[1240px] px-[5vw]">
+      <header className="flex items-center justify-between border-b border-line py-[27px]">
+        <Link href="/admin" className="text-xs font-bold tracking-[0.16em]">
+          FIELD<span className="px-1 text-accent"> / </span>NOTES
         </Link>
-        <nav className="site-nav">
+        <nav className="flex items-center gap-[30px] text-xs text-muted">
           <Link href="/admin">All notes</Link>
           <span>{postId ? "Editing draft" : "New note"}</span>
+          <ThemeToggle />
         </nav>
       </header>
-      <section className="editor-page">
-        <div className="editor-top">
+      <section className="py-[90px_0_120px] max-[700px]:py-[70px_0]">
+        <div className="flex items-end justify-between gap-7 max-[700px]:flex-col max-[700px]:items-start">
           <div>
-            <p className="eyebrow">Writing desk / {postId ? "Edit note" : "New note"}</p>
-            <h1>Shape the thought.</h1>
+            <p className="mb-[18px] text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+              Writing desk / {postId ? "Edit note" : "New note"}
+            </p>
+            <h1 className="m-0 font-sans text-[clamp(48px,7vw,82px)] font-[650] leading-[0.9] tracking-[-0.085em]">
+              Shape the thought.
+            </h1>
           </div>
-          <div className="editor-actions">
-            <button className="admin-button secondary" type="submit" form="post-editor" disabled={saving}>
+          <div className="flex gap-2.5">
+            <button
+              className="border border-foreground bg-transparent px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] disabled:opacity-50"
+              type="submit"
+              form="post-editor"
+              disabled={saving}>
               Save draft
             </button>
             <button
-              className="admin-button"
+              className="border border-foreground bg-foreground px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] text-background hover:border-accent hover:bg-accent"
               type="button"
               disabled={saving}
               onClick={() => void save("published")}>
@@ -141,15 +151,17 @@ export default function EditorPage() {
           </div>
         </div>
         {message && (
-          <p className={Object.keys(errors).length ? "editor-message" : "editor-success"} role="status">
+          <p
+            className={`mt-6 text-sm ${Object.keys(errors).length ? "text-destructive" : "text-[#00875a]"}`}
+            role="status">
             {message}
           </p>
         )}
         <form id="post-editor" onSubmit={submit}>
-          <div className="editor-meta">
+          <div className="mt-[70px] mb-[25px] grid grid-cols-[1fr_1fr_1.5fr] gap-[30px] max-[700px]:block max-[700px]:mt-[55px]">
             <div className="editor-field">
               <input
-                className={inputClass("title")}
+                className={`w-full border-0 border-b border-line bg-transparent py-3 text-foreground outline-0 focus:border-accent max-[700px]:mb-[18px] ${inputClass("title")}`}
                 aria-label="Post title"
                 placeholder="Untitled note"
                 value={title}
@@ -158,11 +170,11 @@ export default function EditorPage() {
                   setErrors((current) => ({ ...current, title: undefined }));
                 }}
               />
-              {errors.title && <p className="editor-field-error">{errors.title}</p>}
+              {errors.title && <p className="mt-2 text-xs text-destructive">{errors.title}</p>}
             </div>
             <div className="editor-field">
               <input
-                className={inputClass("slug")}
+                className={`w-full border-0 border-b border-line bg-transparent py-3 text-foreground outline-0 focus:border-accent max-[700px]:mb-[18px] ${inputClass("slug")}`}
                 aria-label="Post slug"
                 placeholder="post-slug"
                 value={slug}
@@ -171,11 +183,11 @@ export default function EditorPage() {
                   setErrors((current) => ({ ...current, slug: undefined }));
                 }}
               />
-              {errors.slug && <p className="editor-field-error">{errors.slug}</p>}
+              {errors.slug && <p className="mt-2 text-xs text-destructive">{errors.slug}</p>}
             </div>
             <div className="editor-field">
               <input
-                className={inputClass("excerpt")}
+                className={`w-full border-0 border-b border-line bg-transparent py-3 text-foreground outline-0 focus:border-accent ${inputClass("excerpt")}`}
                 aria-label="Post excerpt"
                 placeholder="A short description for the archive..."
                 value={excerpt}
@@ -184,13 +196,13 @@ export default function EditorPage() {
                   setErrors((current) => ({ ...current, excerpt: undefined }));
                 }}
               />
-              {errors.excerpt && <p className="editor-field-error">{errors.excerpt}</p>}
+              {errors.excerpt && <p className="mt-2 text-xs text-destructive">{errors.excerpt}</p>}
             </div>
           </div>
-          <div className="editor-fields">
+          <div className="mb-[25px] grid grid-cols-3 gap-[30px] max-[700px]:block [&>*]:max-[700px]:mb-3.5">
             <Combobox items={categories} inputValue={category} onInputValueChange={setCategory} autoHighlight>
               <ComboboxInput
-                className="category-trigger"
+                className="border-line bg-transparent"
                 aria-label="Post category"
                 placeholder="Category"
                 showTrigger
@@ -219,31 +231,41 @@ export default function EditorPage() {
               onChange={(event) => setTags(event.target.value)}
             />
           </div>
-          <Tabs className="editor-tabs" defaultValue="editor">
-            <TabsList className="editor-tabs-list" variant="line">
+          <Tabs className="min-h-[550px] border border-line" defaultValue="editor">
+            <TabsList className="flex w-full rounded-none border-b border-line px-3.5" variant="line">
               <TabsTrigger value="editor">Write</TabsTrigger>
               <TabsTrigger value="preview">Preview</TabsTrigger>
             </TabsList>
-            <TabsContent className="editor-pane" value="editor">
-              <div className="toolbar">
-                <button type="button" onClick={() => setBody((value) => `# Heading\n\n${value}`)}>
+            <TabsContent className="min-h-[500px]" value="editor">
+              <div className="flex items-center gap-1.5 border-b border-line px-3.5 py-2">
+                <button
+                  className="bg-transparent px-2 py-1.5 text-muted hover:text-accent"
+                  type="button"
+                  onClick={() => setBody((value) => `# Heading\n\n${value}`)}>
                   H1
                 </button>
-                <button type="button" onClick={() => setBody((value) => `**bold** ${value}`)}>
+                <button
+                  className="bg-transparent px-2 py-1.5 text-muted hover:text-accent"
+                  type="button"
+                  onClick={() => setBody((value) => `**bold** ${value}`)}>
                   B
                 </button>
                 <button
+                  className="bg-transparent px-2 py-1.5 text-muted hover:text-accent"
                   type="button"
                   onClick={() => setBody((value) => `${value}\n\n[Link text](https://example.com)`)}>
                   Link
                 </button>
-                <button type="button" onClick={() => setBody((value) => `${value}\n\n\`\`\`\ncode\n\`\`\``)}>
+                <button
+                  className="bg-transparent px-2 py-1.5 text-muted hover:text-accent"
+                  type="button"
+                  onClick={() => setBody((value) => `${value}\n\n\`\`\`\ncode\n\`\`\``)}>
                   Code
                 </button>
-                <span>Markdown</span>
+                <span className="ml-auto text-[10px] uppercase text-muted">Markdown</span>
               </div>
               <textarea
-                className={inputClass("body")}
+                className={`h-[430px] w-full resize-none border-0 bg-transparent p-7 font-mono text-base leading-[1.7] text-foreground outline-0 ${inputClass("body")}`}
                 value={body}
                 onChange={(event) => {
                   setBody(event.target.value);
@@ -251,10 +273,14 @@ export default function EditorPage() {
                 }}
                 aria-label="Markdown body"
               />
-              {errors.body && <p className="editor-field-error editor-body-error">{errors.body}</p>}
+              {errors.body && <p className="mt-2 text-xs text-destructive">{errors.body}</p>}
             </TabsContent>
-            <TabsContent className="preview-pane" value="preview">
-              <p className="eyebrow">Live preview</p>
+            <TabsContent
+              className="min-h-[500px] p-7 [&_h1]:mb-5 [&_h1]:font-editorial [&_h1]:text-4xl [&_h1]:font-normal [&_h2]:my-6 [&_h2]:font-editorial [&_h2]:text-[1.75rem] [&_h2]:font-normal [&_p]:font-editorial [&_p]:leading-[1.6]"
+              value="preview">
+              <p className="mb-[18px] text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                Live preview
+              </p>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
             </TabsContent>
           </Tabs>

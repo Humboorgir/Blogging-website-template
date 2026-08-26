@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
@@ -17,12 +19,14 @@ export function ThemeToggle() {
     document.documentElement.classList.toggle("dark", nextDark);
   }
   return (
-    <button
-      className="theme-toggle"
+    <Button
+      variant="ghost"
+      size="icon"
+      className="text-muted hover:text-foreground"
       type="button"
       aria-label={dark ? "Use light mode" : "Use dark mode"}
       onClick={toggle}>
-      {dark ? "○" : "◐"}
-    </button>
+      {dark ? <Sun /> : <Moon />}
+    </Button>
   );
 }
