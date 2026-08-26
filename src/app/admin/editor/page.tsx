@@ -12,6 +12,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const starter =
   "A good tool does not ask to be admired. It makes room for attention.\n\nStart writing your note here...";
@@ -218,8 +219,12 @@ export default function EditorPage() {
               onChange={(event) => setTags(event.target.value)}
             />
           </div>
-          <div className="editor-grid">
-            <div className="editor-pane">
+          <Tabs className="editor-tabs" defaultValue="editor">
+            <TabsList className="editor-tabs-list" variant="line">
+              <TabsTrigger value="editor">Write</TabsTrigger>
+              <TabsTrigger value="preview">Preview</TabsTrigger>
+            </TabsList>
+            <TabsContent className="editor-pane" value="editor">
               <div className="toolbar">
                 <button type="button" onClick={() => setBody((value) => `# Heading\n\n${value}`)}>
                   H1
@@ -247,12 +252,12 @@ export default function EditorPage() {
                 aria-label="Markdown body"
               />
               {errors.body && <p className="editor-field-error editor-body-error">{errors.body}</p>}
-            </div>
-            <div className="preview-pane">
+            </TabsContent>
+            <TabsContent className="preview-pane" value="preview">
               <p className="eyebrow">Live preview</p>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
         </form>
       </section>
     </main>
