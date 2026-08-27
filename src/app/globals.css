@@ -11,6 +11,8 @@
   --line: #eaeaea;
   --accent: #0070f3;
   --paper: #f7f7f7;
+  --admin-background: #f1f1f1;
+  --status-background: #e4e4e4;
   --moss: #66735e;
   --accent-soft: #e8f2ff;
   --card: #ffffff;
@@ -37,6 +39,8 @@
   --line: #242424;
   --accent: #3291ff;
   --paper: #111111;
+  --admin-background: #171717;
+  --status-background: #292929;
   --accent-soft: #10233a;
   --card: #111111;
   --card-foreground: #ededed;
@@ -65,6 +69,8 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-paper: var(--paper);
+  --color-admin-background: var(--admin-background);
+  --color-status-background: var(--status-background);
   --color-moss: var(--moss);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);

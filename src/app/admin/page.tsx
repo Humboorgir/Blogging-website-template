@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight, FileText, PenLine, Users } from "lucide-react";
 import { desc } from "drizzle-orm";
 import { db } from "@/db";
 import { posts } from "@/db/schema";
@@ -9,98 +10,79 @@ export default async function AdminPage() {
   const published = allPosts.filter((post) => post.status === "published");
   const drafts = allPosts.filter((post) => post.status === "draft");
   return (
-    <main className="mx-auto min-h-screen max-w-[1240px] px-[5vw]">
-      <header className="flex items-center justify-between border-b border-line py-[27px]">
-        <Link href="/" className="text-xs font-bold tracking-[0.16em]">
-          FIELD<span className="px-1 text-accent"> / </span>NOTES
-        </Link>
-        <nav className="flex items-center gap-[30px] text-xs text-muted">
-          <span>Admin workspace</span>
-          <Link href="/admin/login">Sign out</Link>
-          <ThemeToggle />
-        </nav>
+    <main className="min-h-screen bg-admin-background">
+      <header className="border-b border-border bg-background">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+          <Link href="/" className="font-serif text-xl font-semibold">
+            Field Notes<span className="text-primary">.</span>
+          </Link>
+          <nav className="flex items-center gap-5 text-sm text-muted-foreground">
+            <Link href="/admin/editor">New article</Link>
+            <Link href="/admin/team">Team</Link>
+            <ThemeToggle />
+          </nav>
+        </div>
       </header>
-      <section className="py-[90px_0_120px] max-[700px]:py-[70px_0]">
-        <div className="flex items-end justify-between gap-7 max-[700px]:flex-col max-[700px]:items-start">
+      <div className="mx-auto max-w-7xl px-5 py-12">
+        <div className="flex items-end justify-between">
           <div>
-            <p className="mb-[18px] text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
-              Private workspace
+            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              Editorial desk
             </p>
-            <h1 className="m-0 font-sans text-[clamp(48px,7vw,82px)] font-[650] leading-[0.9] tracking-[-0.085em]">
-              Good morning.
-            </h1>
+            <h1 className="mt-3 font-serif text-5xl tracking-tight">Good morning.</h1>
           </div>
           <Link
             href="/admin/editor"
-            className="inline-flex gap-4 border border-foreground bg-foreground px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] text-background hover:border-accent hover:bg-accent">
-            New note <span>+</span>
+            className="flex items-center gap-2 bg-primary px-4 py-2 text-sm text-primary-foreground">
+            Write a note <PenLine className="size-4" />
           </Link>
         </div>
-        <div className="my-[75px] grid grid-cols-3 border-y border-line py-6 max-[700px]:my-[55px]">
-          <div>
-            <strong className="font-editorial text-[42px] font-normal max-[700px]:text-[30px]">
-              {published.length}
-            </strong>
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted max-[700px]:text-[9px]">
-              Published notes
-            </span>
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          <div className="border border-border bg-background p-6">
+            <FileText className="size-5 text-muted-foreground" />
+            <p className="mt-8 text-sm text-muted-foreground">Published</p>
+            <p className="mt-1 font-serif text-4xl">{published.length}</p>
           </div>
-          <div>
-            <strong className="font-editorial text-[42px] font-normal max-[700px]:text-[30px]">
-              {drafts.length}
-            </strong>
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted max-[700px]:text-[9px]">
-              Draft in progress
-            </span>
+          <div className="border border-border bg-background p-6">
+            <PenLine className="size-5 text-muted-foreground" />
+            <p className="mt-8 text-sm text-muted-foreground">Drafts</p>
+            <p className="mt-1 font-serif text-4xl">{drafts.length}</p>
           </div>
-          <div>
-            <strong className="font-editorial text-[42px] font-normal max-[700px]:text-[30px]">—</strong>
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted max-[700px]:text-[9px]">
-              Readers this month
-            </span>
+          <div className="border border-border bg-background p-6">
+            <Users className="size-5 text-muted-foreground" />
+            <p className="mt-8 text-sm text-muted-foreground">Contributors</p>
+            <p className="mt-1 font-serif text-4xl">1</p>
           </div>
         </div>
-        <div className="flex items-center justify-between border-b border-line pb-[15px]">
-          <h2 className="m-0 font-editorial text-[28px] font-normal">Your notes</h2>
-          <span className="text-[10px] uppercase tracking-[0.1em] text-muted">
-            {published.length + drafts.length} total
-          </span>
-        </div>
-        <div className="mb-[85px]">
+        <section className="mt-12 border border-border bg-background">
+          <div className="flex items-center justify-between border-b border-border p-5">
+            <h2 className="font-serif text-2xl">Recent notes</h2>
+            <span className="text-sm text-muted-foreground">{allPosts.length} total</span>
+          </div>
           {allPosts.map((post) => (
-            <div
-              className="grid grid-cols-[2fr_1fr_50px] items-center gap-5 border-b border-line py-5 text-sm max-[700px]:grid-cols-[1fr_45px]"
-              key={post.slug}>
-              <div>
-                <span
-                  className={`mr-2 inline-block size-[7px] rounded-full ${post.status === "draft" ? "bg-accent" : "bg-moss"}`}
-                />
-                {post.title}
+            <Link
+              href={`/admin/editor?slug=${post.slug}`}
+              key={post.id}
+              className="flex items-center gap-4 border-b border-border p-5 last:border-0">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium">{post.title}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {post.category} ·{" "}
+                  {post.status === "draft"
+                    ? "Draft"
+                    : post.publishedAt?.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                </p>
               </div>
-              <span className="text-[11px] text-muted max-[700px]:col-start-1 max-[700px]:row-start-2">
-                {post.status === "draft"
-                  ? "Draft"
-                  : post.publishedAt?.toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-              </span>
-              <Link
-                className="text-[11px] text-accent max-[700px]:col-start-2 max-[700px]:row-span-2"
-                href={`/admin/editor?slug=${post.slug}`}>
-                Edit ↗
-              </Link>
-            </div>
+              <span className="rounded-full bg-status-background px-3 py-1 text-xs">{post.status}</span>
+              <ArrowUpRight className="size-4 text-muted-foreground" />
+            </Link>
           ))}
-        </div>
-        <div className="flex items-center justify-between border-b border-line pb-[15px]">
-          <h2 className="m-0 font-editorial text-[28px] font-normal">Team access</h2>
-          <Link className="text-[11px] text-accent" href="/admin/team">
-            Manage admins ↗
-          </Link>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }

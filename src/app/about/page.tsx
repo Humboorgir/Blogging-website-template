@@ -1,0 +1,38 @@
+import { Footer, Header } from "@/components/field-notes";
+
+export default function AboutPage() {
+  return (
+    <>
+      <Header />
+      <main className="mx-auto max-w-6xl px-5 py-20">
+        <div className="grid gap-12 md:grid-cols-[.8fr_1.2fr]">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              About Field Notes
+            </p>
+          </div>
+          <div>
+            <h1 className="font-serif text-5xl leading-tight tracking-tight md:text-7xl">
+              A small publication for paying attention.
+            </h1>
+            <div className="mt-12 flex flex-col gap-7 text-lg leading-8 text-muted-foreground">
+              <p>
+                Field Notes is an independent journal about the tools, rituals, and ideas that help us make a
+                life with intention.
+              </p>
+              <p>
+                We believe good writing can be useful without being instructional, and that the most
+                interesting ideas often arrive quietly.
+              </p>
+              <p>
+                We publish essays, observations, and conversations from writers who look closely at the
+                ordinary.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

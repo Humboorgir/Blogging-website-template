@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 export default function TeamPage() {
   return (
@@ -28,9 +29,7 @@ export default function TeamPage() {
             <strong>Admin account</strong>
             <span>admin@example.com</span>
           </div>
-          <button className="border border-foreground bg-transparent px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] hover:border-accent hover:text-accent">
-            Change password
-          </button>
+          <Button variant="outline">Change password</Button>
         </div>
         <div className="mt-12 border border-line p-7">
           <h2 className="font-editorial text-[28px] font-normal">Add an admin</h2>
@@ -44,11 +43,9 @@ export default function TeamPage() {
                 placeholder="owner@example.com"
               />
             </label>
-            <button
-              className="inline-flex w-fit gap-4 border border-foreground bg-foreground px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] text-background hover:border-accent hover:bg-accent"
-              type="button">
+            <Button type="button">
               Add admin <span>+</span>
-            </button>
+            </Button>
           </form>
         </div>
       </section>

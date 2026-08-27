@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -56,11 +57,9 @@ export default function LoginPage() {
             />
           </label>
           {error && <p className="m-0 text-xs text-[#a95136]">{error}</p>}
-          <button
-            type="submit"
-            className="inline-flex w-fit gap-4 border border-foreground bg-foreground px-[18px] py-3.5 text-[11px] uppercase tracking-[0.08em] text-background transition-colors hover:border-accent hover:bg-accent">
+          <Button type="submit" className="mt-2 w-full">
             Sign in <span>↗</span>
-          </button>
+          </Button>
         </form>
       </section>
     </main>
